@@ -102,7 +102,7 @@ function User() {
                 </div>
 
             ))}
-            {role === 'admin' && (
+            {(role === 'admin') ? (
                 <div className="bg-white p-4 shadow">
                     {showAddItemForm ? (
                         <form onSubmit={(e) => handleSubmitNewItem(e)}>
@@ -134,7 +134,7 @@ function User() {
                         <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2" onClick={handleAddItems}>Add Items</button>
                     )}
                 </div>
-            )}
+            ): null}
         </div>
     );
 }
