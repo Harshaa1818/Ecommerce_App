@@ -11,6 +11,8 @@ app.use(
     cors({
         origin: "*",
         credentials: true,
+        methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+        allowContent: "application/json",
     })
 );
 

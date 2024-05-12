@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeProductFromstore = exports.AddProductInStore = exports.ViewItems = void 0;
+exports.updateProductInStore = exports.removeProductFromstore = exports.AddProductInStore = exports.ViewItems = void 0;
 const ViewItems = async (req, res) => {
     try {
         const items = await grocery_items_js_1.default.findAll();
@@ -39,4 +39,28 @@ const removeProductFromstore = async (req, res) => {
     }
 };
 exports.removeProductFromstore = removeProductFromstore;
+const updateProductInStore = async (req, res) => {
+    try {
+        const { id, price, quantity } = req.body;
+        const item = await grocery_items_js_1.default.findOne({ where: { id } });
+        console.log(item);
+        if (!item) {
+            return res.status(404).json({ msg: "Product not found" });
+        }
+        let newQuantity = item.dataValues.quantity;
+        if (quantity !== undefined) {
+            newQuantity += quantity;
+            if (newQuantity < 0) {
+                return res.status(400).json({ msg: "Quantity can't be negative" });
+            }
+        }
+        const result = await item.update({ price, quantity: newQuantity });
+        console.log(result);
+        return res.status(200).json({ msg: "Product updated successfully", result });
+    }
+    catch (err) {
+        return res.status(500).json({ msg: err.message });
+    }
+};
+exports.updateProductInStore = updateProductInStore;
 //# sourceMappingURL=admincontroller.js.map

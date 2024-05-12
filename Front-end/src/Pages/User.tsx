@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface EcommerceItem {
     id: number;
     name: string;
     price: number;
     image: string;
+    quantity: number;
 }
 
 function User() {
@@ -18,8 +20,10 @@ function User() {
         price: '',
         image: ''
     });
+    
 
-    const handleCart = (card: EcommerceItem) => {
+    const handleCart = (card: EcommerceItem) => 
+    {
         setCart([...Cart, card]);
         console.log("Cart", card.id);
         axios.post('http://localhost:8000/api/v1/user/additems', { username: localStorage.getItem('user'), groceryItemId: card.id, quantity: 1 })
@@ -31,12 +35,13 @@ function User() {
                 }, 500);
             }).catch((error) => {
                 console.error('Error adding item to cart: ', error);
-                alert("Error adding item to cart");
+                alert("Login to add items to cart");
             });
         console.log("Cart", Cart);
     }
 
-    const handleDeleteItem = (cardId: number) => {
+    const handleDeleteItem = (cardId: number) => 
+    {
         console.log(cardId);
         axios.post('http://localhost:8000/api/v1/admin/deleteitems', { id: cardId })
             .then((response) => {
@@ -47,12 +52,14 @@ function User() {
             });
     }
 
-    const handleAddItems = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleAddItems = (e: React.MouseEvent<HTMLButtonElement>) => 
+    {
         e.preventDefault();
         setShowAddItemForm(true);
     }
 
-    const handleSubmitNewItem = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmitNewItem = (e: React.FormEvent<HTMLFormElement>) => 
+    {
         e.preventDefault();
         axios.post('http://localhost:8000/api/v1/admin/additems', {
             name: newItem.name,
@@ -70,7 +77,10 @@ function User() {
         console.log(newItem)
     }
 
-    useEffect(() => {
+  
+
+    useEffect(() => 
+    {
         axios.get<{ items: EcommerceItem[] }>('http://localhost:8000/api/v1/user/viewitems')
             .then((response) => {
                 setEcommerceCards(response.data.items);
@@ -93,12 +103,22 @@ function User() {
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">{card.name}</h3>
                     <p className="text-gray-400">Price: ₹{card.price}</p>
+                    {
+                        card.quantity > 0 ? <p className="text-xs text-emerald-500 font-semibold">In Stock</p> :
+                        <p className="text-xs text-red-500 font-semibold">Out of Stock</p>
+                        
+                    }
+                    
+                    
 
-                    {role === 'admin' ? (
+                    {role === 'admin' ? (<>
                         <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4" onClick={() => handleDeleteItem(card.id)}>Delete Item</button>
-                    ) : (
+                       <Link to={'/groceryupdate'} state={{name:card.name,id:card.id,image:card.image}}><button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4" >Edit Item</button></Link></>
+                       
+                ) : (
                         <button className="bg-black hover:bg-gray-400 text-white font-bold py-2 px-4 rounded-xl mt-4" onClick={() => handleCart(card)}>Add to Cart</button>
-                    )}
+                    )
+                    }
                 </div>
 
             ))}
@@ -133,6 +153,10 @@ function User() {
                     ) : (
                         <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2" onClick={handleAddItems}>Add Items</button>
                     )}
+                    
+                     
+                   
+                    
                 </div>
             ): null}
         </div>

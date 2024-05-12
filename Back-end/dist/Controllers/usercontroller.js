@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUser = exports.getUser = exports.registerController = exports.loginController = exports.RemoveFromCart = exports.addItemsToCart = exports.ViewCartItems = exports.ViewItems = exports.landingPage = void 0;
+exports.updateCartItems = exports.registerController = exports.loginController = exports.RemoveFromCart = exports.addItemsToCart = exports.ViewCartItems = exports.ViewItems = exports.landingPage = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_js_1 = __importDefault(require("../Models/user.model.js"));
 const grocery_items_js_1 = __importDefault(require("../Models/grocery.items.js"));
@@ -190,10 +190,20 @@ const registerController = async (req, res) => {
     }
 };
 exports.registerController = registerController;
-const getUser = async (req, res) => {
+const updateCartItems = async (req, res) => {
+    const { id, quantity } = req.body;
+    try {
+        const cartItem = await cart_model_js_1.default.findOne({ where: { id } });
+        if (!cartItem) {
+            return res.status(404).json({ message: "Cart item not found" });
+        }
+        const updatedCartItem = await cart_model_js_1.default.update({ quantity }, { where: { id } });
+        return res.status(200).json({ message: "Cart item updated successfully", updatedCartItem });
+    }
+    catch (error) {
+        console.error("Error updating cart item:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 };
-exports.getUser = getUser;
-const registerUser = async (req, res) => {
-};
-exports.registerUser = registerUser;
+exports.updateCartItems = updateCartItems;
 //# sourceMappingURL=usercontroller.js.map

@@ -12,7 +12,7 @@ services:
 
   frontend:
     build:
-      context: ./Front-end/grocery frontend
+      context: ./Front-end
       dockerfile: Dockerfile
     ports:
       - "8080:8080"

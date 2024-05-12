@@ -88,7 +88,9 @@ export const landingPage=()=>{
 
 export const ViewItems=async(req: Request, res: Response)=>{
     try{
-        const items = await GroceryItem.findAll();
+        const items = await GroceryItem.findAll();  
+
+        
         return res.status(200).json({ items });
     }
     catch(error){
@@ -228,12 +230,17 @@ export const registerController = async (req: Request, res: Response) => {
     }
 }
 
-export const getUser = async (req: Request, res: Response) => {
-
-
-}
-
-
-
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
+export const updateCartItems = async (req: Request, res: Response) => {
+    const { id, quantity } = req.body;
+    try {
+        const cartItem = await Cart.findOne({ where: { id } });
+        if (!cartItem) {
+            return res.status(404).json({ message: "Cart item not found" });
+        }
+        const updatedCartItem = await Cart.update({ quantity }, { where: { id } });
+        return res.status(200).json({ message: "Cart item updated successfully", updatedCartItem });
+    } catch (error) {
+        console.error("Error updating cart item:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 }

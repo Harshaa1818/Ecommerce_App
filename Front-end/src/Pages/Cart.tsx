@@ -17,9 +17,10 @@ interface EcommerceItem {
 function Cart() {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [ecommerceCards, setEcommerceCards] = useState<EcommerceItem[]>([]);
+    const [quantity, setQuantity] = useState<number>(1);
 
     useEffect(() => {
-        // Fetch cart items
+        
         axios.post<{ items: CartItem[] }>('http://localhost:8000/api/v1/user/ViewCartItems', { username: localStorage.getItem('user') })
             .then((response: AxiosResponse<{ items: CartItem[] }>) => {
                 setCartItems(response.data.items);
@@ -29,7 +30,7 @@ function Cart() {
                 console.error('Error fetching cart items: ', error);
             });
 
-        // Fetch grocery items
+        
         axios.get<{ items: EcommerceItem[] }>('http://localhost:8000/api/v1/user/viewitems')
             .then((response: AxiosResponse<{ items: EcommerceItem[] }>) => {
                 setEcommerceCards(response.data.items);
@@ -52,6 +53,35 @@ function Cart() {
             });
     }
 
+    const handleDecrement = (cartItemId: number) => {
+        if (quantity === 0) {
+            handleDeleteFromCart(cartItemId);
+            return;
+        }
+        setQuantity(quantity - 1);
+        axios.post('http://localhost:8000/api/v1/user/updateCartItems', { id: cartItemId, quantity: quantity })
+            .then((response: AxiosResponse) => {
+                console.log(response.data);
+                alert("Item quantity updated successfully");
+            })
+            .catch((error: AxiosError) => {
+                console.error('Error updating item quantity: ', error);
+            });
+        
+    }
+    const handleIncrement = (cartItemId: number) => {
+        setQuantity(quantity + 1);
+        axios.post('http://localhost:8000/api/v1/user/updateCartItems', { id: cartItemId, quantity: quantity })
+            .then((response: AxiosResponse) => {
+                console.log(response.data);
+                alert("Item quantity updated successfully");
+                
+            })
+            .catch((error: AxiosError) => {
+                console.error('Error updating item quantity: ', error);
+            });
+    }
+
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-semibold mb-4">Cart Items</h1>
@@ -65,7 +95,12 @@ function Cart() {
                                 <img src={matchingItem.image} alt={matchingItem.name} className="w-full h-40 object-cover mb-4 rounded-lg" />
                                 <h2 className="text-xl font-semibold mb-2">{matchingItem.name}</h2>
                                 <p className="text-gray-600">₹{matchingItem.price}</p>
-                                <p className="text-gray-600">Quantity: {cartItem.quantity}</p>
+                                <div className="flex gap-3 items-center justify-center">
+                                <button className='px-2 bg-black text-white rounded-md align-middle' onClick={()=>{handleDecrement(cartItem.id)}}>-</button>
+
+                                <p className="text-gray-600">Quantity: {quantity}</p>
+                                <button className='px-2 bg-black text-white rounded-md' onClick={() => handleIncrement(cartItem.id)}>+</button>
+                                </div>
                                 <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg mt-4" onClick={() => handleDeleteFromCart(cartItem.id)}>Delete from Cart</button>
                             </div>
                         );

@@ -6,12 +6,14 @@ import Navbar from './Pages/nav.tsx'
 import LoginPage from './Pages/LoginPage.tsx'
 import RegisterPage from './Pages/RegisterPage.tsx'
 import Cart from './Pages/Cart.tsx'
+import Grocerymanage from './Pages/Grocerymanage.tsx'
 
 const router = createBrowserRouter([
   { path: '/login', element:<> <LoginPage/> </>},
   {path: '/', element: <><Navbar /><User /></>},
   {path: '/register', element: <><RegisterPage/></>},
   {path: '/cart', element: <><Navbar /><Cart /></>},
+  {path:'/groceryupdate',element:<><Navbar /><Grocerymanage/></>}
 ])
 
 function App() {
@@ -21,10 +23,7 @@ function App() {
     <div className='bg-black p-9 rounded-xl'>
       <RouterProvider router={router} />
       
-      
-        
-      
-    </div>
+      </div>
   )
 }
 

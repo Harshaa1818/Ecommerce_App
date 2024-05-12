@@ -11,6 +11,8 @@ exports.app = app;
 app.use((0, cors_1.default)({
     origin: "*",
     credentials: true,
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowContent: "application/json",
 }));
 app.use(express_1.default.json({ limit: "16kb" }));
 app.use(express_1.default.urlencoded({ extended: true, limit: "16kb" }));

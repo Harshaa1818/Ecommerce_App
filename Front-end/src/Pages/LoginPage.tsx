@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
         }).then((response) => {
             localStorage.setItem('token', response.data.accessToken);
             localStorage.setItem('user', response.data.user.username);
-            localStorage.setItem('role', response.data.user.role)
+            localStorage.setItem('role', response.data.user.role);
             
             console.log(response.data);
 
