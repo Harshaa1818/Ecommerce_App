@@ -171,7 +171,9 @@ export const loginController = async (req: Request, res: Response) => {
     try {
         // Find the user with the provided email
         const user = await User.findOne({ where: { username } });
-        console.log("user:",user.dataValues.id);
+        console.log(user);
+        
+        
         
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -202,7 +204,7 @@ export const loginController = async (req: Request, res: Response) => {
     } 
     catch (error) {
         console.error('Error during login:', error);
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({ message: 'Invalid user' });
     }
 };
 
@@ -244,3 +246,4 @@ export const updateCartItems = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 }
+

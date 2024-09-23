@@ -30,14 +30,15 @@ function Cart() {
                 console.error('Error fetching cart items: ', error);
             });
 
-        
-        axios.get<{ items: EcommerceItem[] }>('http://localhost:8000/api/v1/user/viewitems')
+            axios.get<{ items: EcommerceItem[] }>('http://localhost:8000/api/v1/user/viewitems')
             .then((response: AxiosResponse<{ items: EcommerceItem[] }>) => {
                 setEcommerceCards(response.data.items);
             })
             .catch((error: AxiosError) => {
                 console.error('Error fetching grocery items: ', error);
             });
+        
+        
     }, []);
 
    const handleDeleteFromCart = (cartItemId: number) => {
@@ -102,7 +103,12 @@ function Cart() {
                                 <button className='px-2 bg-black text-white rounded-md' onClick={() => handleIncrement(cartItem.id)}>+</button>
                                 </div>
                                 <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg mt-4" onClick={() => handleDeleteFromCart(cartItem.id)}>Delete from Cart</button>
+                            
+                            
+                            
                             </div>
+                            
+
                         );
                     } else {
                         return null; // If no matching item found, don't render anything

@@ -16,7 +16,7 @@ const RegisterPage = () => {
             setTimeout(() => {
                 alert("User registered successfully");
                window.location.href = '/login'; 
-            }, 2000);
+            }, );
         }).catch((error) => {
             console.error('Error registering user: ', error);
             alert("Error registering user");

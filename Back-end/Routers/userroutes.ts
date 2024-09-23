@@ -5,11 +5,11 @@ import {verifyJWT} from '../Middleware/auth.middleware.js'
 const userrouter=Router();
 
 userrouter.route("/").get(landingPage)
-userrouter.route("/viewitems").get(ViewItems)
-userrouter.route("/additems").post(addItemsToCart)
-userrouter.route("/ViewCartItems").post(ViewCartItems)
-userrouter.route("/DeleteCartItems").post(RemoveFromCart)
-userrouter.route("/updateCartItemss").post(updateCartItems)
+userrouter.route("/viewitems").get(verifyJWT,ViewItems)
+userrouter.route("/additems").post(verifyJWT,addItemsToCart)
+userrouter.route("/ViewCartItems").post(verifyJWT,ViewCartItems)
+userrouter.route("/DeleteCartItems").post(verifyJWT,RemoveFromCart)
+userrouter.route("/updateCartItemss").post(verifyJWT,updateCartItems)
 
 
 export default userrouter;

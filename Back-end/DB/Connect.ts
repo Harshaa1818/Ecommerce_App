@@ -6,11 +6,15 @@ const sequelize = new Sequelize('u975951085_lets', 'u975951085_project', 'Nikhil
   host: 'srv1334.hstgr.io', 
 });
 
-async function testConnection() {
-  try {
+async function testConnection() 
+{
+  try 
+  {
     await sequelize.authenticate();
     console.log('Connection to the database has been established successfully.');
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     console.error('Unable to connect to the database:', error);
   }
 }

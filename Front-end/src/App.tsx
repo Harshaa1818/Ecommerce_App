@@ -8,6 +8,7 @@ import RegisterPage from './Pages/RegisterPage.tsx'
 import Cart from './Pages/Cart.tsx'
 import Grocerymanage from './Pages/Grocerymanage.tsx'
 
+
 const router = createBrowserRouter([
   { path: '/login', element:<> <LoginPage/> </>},
   {path: '/', element: <><Navbar /><User /></>},
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
 
 function App() {
   
+ 
 
   return (
     <div className='bg-black p-9 rounded-xl'>

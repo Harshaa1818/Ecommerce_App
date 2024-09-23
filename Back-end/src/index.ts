@@ -7,7 +7,8 @@ dotenv.config({
 })
 
 // Sync the models with the database
-sequelize.sync().then(() => {
+sequelize.sync()
+.then(() => {
   console.log('All models were synchronized successfully.');
 
   // Start the server
@@ -15,6 +16,7 @@ sequelize.sync().then(() => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-}).catch((error) => {
+})
+.catch((error) => {
   console.error('Unable to synchronize models:', error);
 });

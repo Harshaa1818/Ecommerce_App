@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
                 alert("Login successful. Redirecting to home page...");
                 
                 window.location.href = '/';
-            }, 2000);
+            }, );
         }).catch((error) => {
             alert("Invalid credentials")
             console.log(error); 
